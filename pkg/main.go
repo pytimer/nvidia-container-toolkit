@@ -154,6 +154,13 @@ func doPrestart() {
 	log.Panicln("exec failed:", err)
 }
 
+func doPoststop() {
+	_, err := os.Create("/tmp/demo")
+	if err != nil {
+		log.Panicln("exec failed:", err)
+	}
+}
+
 func usage() {
 	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 	flag.PrintDefaults()
@@ -178,8 +185,9 @@ func main() {
 		doPrestart()
 		os.Exit(0)
 	case "poststart":
-		fallthrough
+		os.Exit(0)
 	case "poststop":
+		doPoststop()
 		os.Exit(0)
 	default:
 		flag.Usage()
